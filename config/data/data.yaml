@@ -1,0 +1,44 @@
+# Example data configuration. Replace the placeholder source with your own
+# RGB image or video dataset; the paths below are not shipped with the repo.
+sources:
+  - name: dataset
+    type: images            # "images" or "videos"
+    path: data/images
+    pattern: "**/*"
+    # Train/validation splits are made by group so near-duplicate frames never
+    # straddle the split. With split_group_size > 1, every N consecutive images
+    # form one group; with 1, images are grouped by parent directory, so a flat
+    # folder becomes a single group and the split fails.
+    split_group_size: 50
+    split_group_parent: 1
+  # - name: videos
+  #   type: videos
+  #   path: data/videos
+  #   pattern: "**/*.mp4"
+  #   frame_stride: 5
+
+image_size: 256
+batch_size: 4
+num_workers: 0
+val_fraction: 0.1
+depth_cache_dir: data/brea-depth
+depth_cache_namespace: brea-depth
+
+augmentation:
+  horizontal_flip: 0.5
+  vertical_flip: 0.0
+  quarter_turn_probability: 0.0
+  color_jitter: 0.1
+  hue_jitter: 0.02
+  gamma: 0.1
+
+# Rejects blurry, blue-tinted, or scope-bordered frames. Disabled by default;
+# the thresholds are starting points and should be tuned on your data.
+quality_filter:
+  enabled: false
+  max_blue_red_ratio: 1.0
+  border_width_fraction: 0.03
+  black_threshold: 20
+  max_black_border_fraction: 0.5
+  min_intensity_std: 10.0
+  min_laplacian_variance: 20.0

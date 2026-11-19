@@ -10,7 +10,7 @@ outputs/
 multirun/
 runs/
 checkpoints/
-data/
+/data/
 
 # Test and lint caches (kept inside the project)
 .pytest_cache/
